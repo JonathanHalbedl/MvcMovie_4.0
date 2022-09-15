@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Auswertungen";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div id="Statistik_Teuerste" style="height: 350px; min-width:100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js">
+    //lädt javascript funktion für daten
+    $(document).ready(function() {
+       var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+    theme: "light2",
+    title: {
+        text: "Filme"
+    },
+    axisY: {
+        title: "In HK$",
+        titleFontSize: 24
+    },
+    data: [{
+        type: "line",
+        yValueFormatString: "HK$#,###",
+        dataPoints: '/Home/GetAuswertungDaten'
+    }]
+      });
+    });
+
+    //Lädt Daten vom Controller und leitet sie an das DIagramm weiter, oder gibt einen Fehler aus
+    function UpdateDiagramm(){
+        console.log('Update Diagramm');
+       
+    };
+
+    // Erstelle das Diagramm
+    function CreateDiagramm(jsonData){
+        Highcharts.stockChart('Statistik_Teuerste', {
+
+            chart: {
+                backgroundColor: "rgb(255,255,255,0.5)",
+                colorIndex: "#ffffff"
+            },
+            title: {
+                text:  'Diagramm Test'
+            },
+            navigator: {
+                enabled: false
+            },
+            scrollbar: {
+                enabled: false
+            },
+            rangeSelector: {
+                enabled: false
+            },
+            xAxis: {
+                type: 'Datum',
+                labels: {
+                    style: {
+                        color: "#000000",
+                        fontSize: "15px",
+                        fontFamily: "Bookman Old Style"
+                    }
+                }
+            },
+
+            yAxis: {
+                labels: {
+                    style: {
+                        color: "#000000",
+                        fontSize: "15px",
+                        fontFamily: "Bookman Old Style"
+                    }
+                }
+            },
+
+            series: [{
+                type: 'column',
+                name: 'Price',
+                data: jsonData,
+                color: "rgb(5, 96, 122, 0.8)",
+                borderColor: "#000000",
+                borderWidth: "1"
+            }]
+        });
+        console.log(jsonData);
+    }
+
+</script>
